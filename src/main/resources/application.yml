@@ -1,0 +1,52 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: water_flowable
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/water_flowable?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid初始化参数配置start
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j2
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    # druid初始化参数配置end
+
+mybatis:
+  #xml映射版才需要配置，纯注解版本不需要
+  mapper-locations: classpath*:mapper/*.xml #多模块指定sql映射文件的位置，需要在classpath后面多加一个星号
+#  mapper-locations: classpath:mapper/*.xml #指定sql映射文件的位置
+  configuration:
+    map-underscore-to-camel-case: true
+pagehelper:
+  #reasonable：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countsql
+  helper-dialect: mysql
+
+flowable:
+  #关闭定时任务JOB
+  async-executor-activate: false
+  #将databaseSchemaUpdate设置为true。当Flowable发现库与数据库表结构不一致时，会自动将数据库表结构升级至新版本。
+  database-schema-update: false
