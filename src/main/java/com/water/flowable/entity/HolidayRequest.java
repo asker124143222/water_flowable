@@ -16,4 +16,5 @@ public class HolidayRequest implements Serializable {
     private String userName;
     private Integer nrOfHolidays;
     private String description;
+    private Double fee;
 }

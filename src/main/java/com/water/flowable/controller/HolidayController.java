@@ -5,10 +5,12 @@ import com.water.flowable.response.Result;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricActivityInstance;
+import org.flowable.engine.history.HistoricDetail;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.Task;
+import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -66,6 +68,14 @@ public class HolidayController {
     @GetMapping("/getTasks/{userId}")
     public Result<Object> getTasks(@PathVariable String userId) {
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(userId).orderByTaskCreateTime().desc().list();
+        for (Task task : tasks) {
+            System.out.println(task.getId()+" "+task.getAssignee() +" "+task.getName()+" "+task.getDescription());
+        }
+        List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().list();
+        for (HistoricTaskInstance taskInstance : list) {
+            System.out.println(taskInstance);
+            System.out.println(taskInstance.getDescription()+" "+taskInstance.getAssignee()+" "+taskInstance.getOwner());
+        }
         return Result.ok(tasks.toString());
     }
 

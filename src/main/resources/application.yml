@@ -6,11 +6,11 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/water_flowable?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    # 如果不加这个参数，建表会失败：nullCatalogMeansCurrent=true
+    url: jdbc:mysql://localhost:3306/water_flowable?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     # druid初始化参数配置start
@@ -50,3 +50,13 @@ flowable:
   async-executor-activate: false
   #将databaseSchemaUpdate设置为true。当Flowable发现库与数据库表结构不一致时，会自动将数据库表结构升级至新版本。
   database-schema-update: false
+  rest-api-enabled: true
+  history-level: full
+  modeler:
+    app:
+      rest-enabled: true
+  rest:
+    app:
+      authentication-mode: verify-privilege
+  app:
+    deploy-resources: true
